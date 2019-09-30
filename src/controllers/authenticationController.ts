@@ -20,11 +20,13 @@ import {
 } from "italia-ts-commons/lib/responses";
 import { UrlFromString } from "italia-ts-commons/lib/url";
 
+import { UserIdentity } from "../../generated/backend/UserIdentity";
 import { ISessionStorage } from "../services/ISessionStorage";
 import TokenService from "../services/tokenService";
 import { SuccessResponse } from "../types/commons";
 import { SessionToken, WalletToken } from "../types/token";
 import {
+  exactUserIdentityDecode,
   toAppUser,
   validateSpidUser,
   withUserFromRequest
@@ -144,4 +146,29 @@ export default class AuthenticationController {
 
     return ResponseSuccessXml(metadata);
   }
+
+  /**
+   * Returns the user identity stored after the login process.
+   */
+  public readonly getUserIdentity = (
+    req: express.Request
+  ): Promise<
+    | IResponseErrorValidation
+    | IResponseErrorInternal
+    | IResponseSuccessJson<UserIdentity>
+  > =>
+    withUserFromRequest(req, async user => {
+      return UserIdentity.decode(user).fold<
+        IResponseErrorInternal | IResponseSuccessJson<UserIdentity>
+      >(
+        _ => ResponseErrorInternal("Unexpected User Identity data format."),
+        _ =>
+          exactUserIdentityDecode(_).fold<
+            IResponseErrorInternal | IResponseSuccessJson<UserIdentity>
+          >(
+            _1 => ResponseErrorInternal("Exact decode failed."),
+            _1 => ResponseSuccessJson<UserIdentity>(_1)
+          )
+      );
+    });
 }

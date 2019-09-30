@@ -549,6 +549,12 @@ function registerAuthenticationRoutes(app: Express, basePath: string): void {
     `${basePath}/metadata`,
     toExpressHandler(acsController.metadata, acsController)
   );
+
+  app.get(
+    `${basePath}/user-identity`,
+    bearerTokenAuth,
+    toExpressHandler(acsController.getUserIdentity, acsController)
+  );
 }
 
 function registerPublicRoutes(app: Express): void {
