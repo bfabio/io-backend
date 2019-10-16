@@ -673,6 +673,8 @@ definitions:
         $ref: "#/definitions/PreferredLanguages"
       is_inbox_enabled:
         $ref: "#/definitions/IsInboxEnabled"
+      is_email_enabled:
+        $ref: "#/definitions/IsEmailEnabled"
       is_webhook_enabled:
         $ref: "#/definitions/IsWebhookEnabled"
       family_name:
@@ -695,6 +697,7 @@ definitions:
       - fiscal_code
       - has_profile
       - is_inbox_enabled
+      - is_email_enabled
       - is_webhook_enabled
       - name
       - spid_email

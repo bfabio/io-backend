@@ -8,6 +8,7 @@ import { InitializedProfile } from "../../generated/backend/InitializedProfile";
 
 import { ExtendedProfile } from "../../generated/io-api/ExtendedProfile";
 
+import { fromNullable } from "fp-ts/lib/Option";
 import { User } from "./user";
 
 /**
@@ -23,6 +24,7 @@ export const toInitializedProfile = (
   family_name: user.family_name,
   fiscal_code: user.fiscal_code,
   has_profile: true,
+  is_email_enabled: fromNullable(profile.is_email_enabled).getOrElse(true),
   is_inbox_enabled: profile.is_inbox_enabled,
   is_webhook_enabled: profile.is_webhook_enabled,
   name: user.name,
