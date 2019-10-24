@@ -33,9 +33,7 @@ export const User = t.intersection([
     fiscal_code: FiscalCode,
     name: t.string,
     session_token: SessionToken,
-    spid_email: EmailAddress,
     spid_level: SpidLevel,
-    spid_mobile_phone: NonEmptyString,
     wallet_token: WalletToken
   }),
   t.partial({
@@ -43,7 +41,9 @@ export const User = t.intersection([
     nameID: t.string,
     nameIDFormat: t.string,
     sessionIndex: t.string,
-    spid_idp: t.string
+    spid_email: EmailAddress,
+    spid_idp: t.string,
+    spid_mobile_phone: NonEmptyString
   })
 ]);
 
@@ -53,16 +53,16 @@ export type User = t.TypeOf<typeof User>;
 export const SpidUser = t.intersection([
   t.interface({
     authnContextClassRef: SpidLevel,
-    email: EmailAddress,
     familyName: t.string,
     fiscalNumber: FiscalCode,
     getAssertionXml: t.Function,
     issuer: Issuer,
-    mobilePhone: NonEmptyString,
     name: t.string
   }),
   t.partial({
     dateOfBirth: t.string,
+    email: EmailAddress,
+    mobilePhone: NonEmptyString,
     nameID: t.string,
     nameIDFormat: t.string,
     sessionIndex: t.string

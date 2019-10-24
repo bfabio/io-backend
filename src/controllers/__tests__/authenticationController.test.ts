@@ -15,6 +15,7 @@ import { EmailAddress } from "../../../generated/backend/EmailAddress";
 import { FiscalCode } from "../../../generated/backend/FiscalCode";
 import { SpidLevelEnum } from "../../../generated/backend/SpidLevel";
 
+import { UserIdentity } from "../../../generated/backend/UserIdentity";
 import mockReq from "../../__mocks__/request";
 import mockRes from "../../__mocks__/response";
 import RedisSessionStorage from "../../services/redisSessionStorage";
@@ -127,10 +128,9 @@ const validUserPayload = {
   mobilePhone: "3222222222222",
   name: aValidname
 };
-// invalidUser lacks the required email field.
+// invalidUser lacks the required familyName and optional email fields.
 const invalidUserPayload = {
   authnContextClassRef: aValidSpidLevel,
-  familyName: "Garibaldi",
   fiscalNumber: aFiscalNumber,
   getAssertionXml: () => "",
   issuer: {
@@ -320,7 +320,8 @@ describe("AuthenticationController#getUserIdentity", () => {
     response.apply(res);
 
     expect(controller).toBeTruthy();
-    const expectedValue = exactUserIdentityDecode(mockedUser);
+    /* tslint:disable-next-line:no-useless-cast */
+    const expectedValue = exactUserIdentityDecode(mockedUser as UserIdentity);
     expect(isRight(expectedValue)).toBeTruthy();
     expect(response).toEqual({
       apply: expect.any(Function),

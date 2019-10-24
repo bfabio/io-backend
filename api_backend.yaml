@@ -755,6 +755,9 @@ definitions:
       spid_mobile_phone:
         type: string
         minLength: 1
+      date_of_birth:
+        type: string
+        formate: date
       version:
         $ref: '#/definitions/Version'
     required:
@@ -764,8 +767,6 @@ definitions:
       - is_inbox_enabled
       - is_webhook_enabled
       - name
-      - spid_email
-      - spid_mobile_phone
       - version
   AuthenticatedProfile:
     type: object
@@ -785,13 +786,14 @@ definitions:
       spid_mobile_phone:
         type: string
         minLength: 1
+      date_of_birth:
+        type: string
+        format: date
     required:
       - family_name
       - fiscal_code
       - has_profile
       - name
-      - spid_email
-      - spid_mobile_phone
   UserMetadata:
     type: object
     title: User Metadata information

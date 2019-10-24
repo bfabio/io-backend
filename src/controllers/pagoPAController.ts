@@ -8,6 +8,7 @@ import {
   IResponseErrorTooManyRequests,
   IResponseErrorValidation,
   IResponseSuccessJson,
+  ResponseErrorValidation,
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
@@ -55,13 +56,18 @@ export default class PagoPAController {
       // the email from the SPID profile
       const email = maybeCustomEmail ? maybeCustomEmail : profile.spid_email;
 
-      const pagopaUser: PagoPAUser = {
+      const pagopaUser = {
         email,
         family_name: user.family_name,
         mobile_phone: user.spid_mobile_phone,
         name: user.name
       };
 
-      return ResponseSuccessJson(pagopaUser);
+      return PagoPAUser.decode(pagopaUser).fold<
+        IResponseErrorValidation | IResponseSuccessJson<PagoPAUser>
+      >(
+        _ => ResponseErrorValidation("Bad Request", "Invalid User Profile"),
+        _ => ResponseSuccessJson(_)
+      );
     });
 }
